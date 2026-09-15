@@ -1,13 +1,11 @@
+import type { PositionCode } from './positions'
+
 export type Player = {
   id: string
   name: string
   grade: string
   notes: string
-}
-
-export type RatingCategory = {
-  id: string
-  name: string
+  positions: PositionCode[]
 }
 
 export type PracticeSection = {
@@ -15,13 +13,30 @@ export type PracticeSection = {
   title: string
   minutes: number
   details: string
+  setup: string
 }
 
-export type RatingsByPlayer = Record<string, Record<string, number>>
+export type ActiveSession = {
+  startedAt: number
+  pausedAccumMs: number
+  pausedAt: number | null
+  manualOffsetMs: number
+}
+
+export type GamePeriodAssignment = {
+  onField: Record<PositionCode, string>
+  bench: string[]
+}
+
+export type GamePlan = {
+  rosterIds: string[]
+  periods: GamePeriodAssignment[]
+}
 
 export type AppData = {
   players: Player[]
-  categories: RatingCategory[]
   practice: PracticeSection[]
-  ratings: RatingsByPlayer
+  practiceStartTime: string
+  activeSession: ActiveSession | null
+  game: GamePlan | null
 }
