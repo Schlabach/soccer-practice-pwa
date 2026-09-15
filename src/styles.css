@@ -37,12 +37,25 @@ button {
   margin-bottom: 12px;
 }
 
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.brand-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  flex: 0 0 auto;
+}
+
 .topbar h1 {
   margin: 0;
   font-size: clamp(1.4rem, 4vw, 2rem);
 }
 
-.topbar p,
 .section-heading p {
   margin: 4px 0 0;
   color: #64748b;
@@ -105,7 +118,7 @@ main {
 .practice-card {
   position: relative;
   display: grid;
-  grid-template-columns: 80px minmax(0, 1fr) 110px;
+  grid-template-columns: 112px minmax(0, 1fr) 110px;
   gap: 12px;
   align-items: start;
   padding: 14px;
@@ -170,7 +183,7 @@ main {
   font-weight: 800;
 }
 
-input,
+input:not([type="checkbox"]):not([type="radio"]),
 textarea {
   width: 100%;
   border: 1px solid #cbd5e1;
@@ -178,6 +191,14 @@ textarea {
   padding: 10px 11px;
   background: white;
   color: #111827;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  accent-color: #111827;
 }
 
 textarea {
@@ -233,6 +254,15 @@ textarea {
   border-radius: 14px;
   color: #64748b;
   background: white;
+}
+
+.empty-state button {
+  margin-top: 10px;
+  justify-self: start;
+}
+
+.add-row {
+  margin-top: 14px;
 }
 
 .notes-area {
@@ -397,47 +427,40 @@ textarea {
 }
 
 .tabs-accordion {
-  margin-bottom: 14px;
-  position: sticky;
-  top: 0;
-  z-index: 10;
+  position: relative;
 }
 
 .tabs-accordion summary {
   list-style: none;
   cursor: pointer;
-  min-height: 44px;
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
-  padding: 0 14px;
+  justify-content: center;
   border: 1px solid #cbd5e1;
   border-radius: 12px;
   background: white;
-  font-weight: 700;
-}
-
-.tabs-accordion summary::before {
-  content: '☰';
-  margin-right: 10px;
-  color: #64748b;
+  font-size: 1.2rem;
 }
 
 .tabs-accordion summary::-webkit-details-marker {
   display: none;
 }
 
-.tabs-accordion[open] summary {
-  border-radius: 12px 12px 0 0;
-}
-
 .tabs-accordion .tabs {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 20;
+  min-width: 190px;
   display: grid;
   gap: 6px;
   padding: 8px;
   border: 1px solid #cbd5e1;
-  border-top: none;
-  border-radius: 0 0 12px 12px;
+  border-radius: 12px;
   background: white;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, .15);
 }
 
 .tabs button {
@@ -582,11 +605,18 @@ textarea {
   }
 
   .practice-card {
-    grid-template-columns: 68px minmax(0, 1fr);
+    grid-template-columns: 1fr;
+  }
+
+  .time-badge {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    text-align: left;
+    gap: 10px;
   }
 
   .practice-actions {
-    grid-column: 1 / -1;
     grid-template-columns: 1fr auto;
     align-items: end;
   }

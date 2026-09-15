@@ -1,4 +1,5 @@
 import type { AppData, Player, PracticeSection } from './types'
+import { POSITION_CODES } from './positions'
 
 const STORAGE_KEY = 'soccer-practice-coach-v1'
 
@@ -86,7 +87,7 @@ export function loadData(): AppData {
       }),
       players: (parsed.players ?? defaultData.players).map(player => {
         const merged = { ...player }
-        if (!Array.isArray(merged.positions)) merged.positions = ['5', '7', '9', '11']
+        if (!Array.isArray(merged.positions)) merged.positions = [...POSITION_CODES]
         return merged as Player
       })
     }

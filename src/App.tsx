@@ -52,7 +52,7 @@ export default function App() {
       name: '',
       grade: '',
       notes: '',
-      positions: ['5', '7', '9', '11']
+      positions: [...POSITION_CODES]
     }
     setData(current => ({
       ...current,
@@ -101,26 +101,25 @@ export default function App() {
   return (
     <div className="app-shell">
       <header className="topbar">
-        <div>
-          <h1>Soccer Practice Coach</h1>
-          <p>Local-only practice planning and player notes</p>
+        <div className="brand">
+          <img className="brand-logo" src={`${import.meta.env.BASE_URL}icons/icon-192.png`} alt="" />
+          <h1>Soccer Coach</h1>
         </div>
+        <details
+          className="tabs-accordion no-print"
+          open={navOpen}
+          onToggle={e => setNavOpen((e.target as HTMLDetailsElement).open)}
+        >
+          <summary aria-label="Menu">☰</summary>
+          <nav className="tabs" aria-label="Main sections">
+            {(Object.keys(TAB_LABELS) as Tab[]).map(key => (
+              <button key={key} className={tab === key ? 'active' : ''} onClick={() => selectTab(key)}>
+                {TAB_LABELS[key]}
+              </button>
+            ))}
+          </nav>
+        </details>
       </header>
-
-      <details
-        className="tabs-accordion no-print"
-        open={navOpen}
-        onToggle={e => setNavOpen((e.target as HTMLDetailsElement).open)}
-      >
-        <summary>{TAB_LABELS[tab]}</summary>
-        <nav className="tabs" aria-label="Main sections">
-          {(Object.keys(TAB_LABELS) as Tab[]).map(key => (
-            <button key={key} className={tab === key ? 'active' : ''} onClick={() => selectTab(key)}>
-              {TAB_LABELS[key]}
-            </button>
-          ))}
-        </nav>
-      </details>
 
       <main>
         {tab === 'practice' && (
@@ -130,7 +129,6 @@ export default function App() {
                 <h2>Practice Plan</h2>
                 <p>{totalMinutes} total minutes</p>
               </div>
-              <button className="primary no-print" onClick={addPracticeSection}>+ Add section</button>
             </div>
 
             <label className="start-time-row no-print">
@@ -145,12 +143,20 @@ export default function App() {
               />
             </label>
 
+            {data.practice.length === 0 && (
+              <div className="empty-state">
+                <strong>No sections yet.</strong>
+                <span>Add your first practice section below.</span>
+                <button className="primary no-print" onClick={addPracticeSection}>+ Add section</button>
+              </div>
+            )}
+
             <div className="practice-list">
               {data.practice.map((item, index) => (
                 <article className="practice-card" key={item.id}>
                   <div className="time-badge">
                     <span>{item.minutes} min</span>
-                    <span className="clock-range">{plannedSchedule[index]?.startLabel} – {plannedSchedule[index]?.endLabel}</span>
+                    <span className="clock-range">{plannedSchedule[index]?.rangeLabel}</span>
                   </div>
                   <div className="practice-content">
                     <input
@@ -221,6 +227,12 @@ export default function App() {
                 </article>
               ))}
             </div>
+
+            {data.practice.length > 0 && (
+              <div className="add-row no-print">
+                <button className="primary" onClick={addPracticeSection}>+ Add section</button>
+              </div>
+            )}
           </section>
         )}
 
@@ -235,13 +247,13 @@ export default function App() {
                 <h2>Players</h2>
                 <p>{data.players.length} players</p>
               </div>
-              <button className="primary no-print" onClick={addPlayer}>+ Add player</button>
             </div>
 
             {data.players.length === 0 ? (
               <div className="empty-state">
                 <strong>No players yet.</strong>
                 <span>Add them here. Their names and notes stay in this browser only.</span>
+                <button className="primary no-print" onClick={addPlayer}>+ Add player</button>
               </div>
             ) : (
               <div className="player-grid">
@@ -291,6 +303,12 @@ export default function App() {
                     </div>
                   </article>
                 ))}
+              </div>
+            )}
+
+            {data.players.length > 0 && (
+              <div className="add-row no-print">
+                <button className="primary" onClick={addPlayer}>+ Add player</button>
               </div>
             )}
           </section>

@@ -13,7 +13,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['icons/icon-192.png', 'icons/icon-512.png'],
+      includeAssets: ['icons/icon-192.png', 'icons/icon-512.png', 'icons/icon-512-maskable.png'],
       manifest: {
         name: 'Soccer Practice Coach',
         short_name: 'Soccer Coach',
@@ -35,7 +35,7 @@ export default defineConfig({
             type: 'image/png'
           },
           {
-            src: `${base}icons/icon-512.png`,
+            src: `${base}icons/icon-512-maskable.png`,
             sizes: '512x512',
             type: 'image/png',
             purpose: 'maskable'

@@ -15,10 +15,26 @@ export function formatClock(minutesFromMidnight: number): string {
   return `${h12}:${String(m).padStart(2, '0')} ${suffix}`
 }
 
+function clockSuffix(minutesFromMidnight: number): 'AM' | 'PM' {
+  const normalized = ((minutesFromMidnight % 1440) + 1440) % 1440
+  return normalized >= 720 ? 'PM' : 'AM'
+}
+
+/** Compact clock range, e.g. "9:05–9:10 AM" (drops the duplicate AM/PM when both ends share it). */
+export function formatClockRange(startMinutes: number, endMinutes: number): string {
+  const endLabel = formatClock(endMinutes)
+  if (clockSuffix(startMinutes) === clockSuffix(endMinutes)) {
+    const startCore = formatClock(startMinutes).replace(/\s?(AM|PM)$/, '')
+    return `${startCore}–${endLabel}`
+  }
+  return `${formatClock(startMinutes)} – ${endLabel}`
+}
+
 export type PlannedSection = {
   section: PracticeSection
   startLabel: string
   endLabel: string
+  rangeLabel: string
 }
 
 export function buildPlannedSchedule(startTime: string, sections: PracticeSection[]): PlannedSection[] {
@@ -30,7 +46,8 @@ export function buildPlannedSchedule(startTime: string, sections: PracticeSectio
     return {
       section,
       startLabel: formatClock(start),
-      endLabel: formatClock(end)
+      endLabel: formatClock(end),
+      rangeLabel: formatClockRange(start, end)
     }
   })
 }
